@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body style="background: #222529; font-family:'Courier New', Courier, monospace">
+  <main>
+    <nav style="margin-top:20px;" class="d-flex justify-content-around">
+        <a style="color:deepskyblue;text-decoration:none;font-size: 20px" href="/home.html">ADD</a>
+        <a style="color:blanchedalmond; text-decoration:none;font-size: 20px" href="/student/list">LIST</a>
+        <a style="color:palegreen;text-decoration:none;font-size: 20px" href="/displayStudent">DISPLAY</a>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+
+
+          <h1 style="color:cadetblue; padding-top:50px; text-align:center" class="text-left mt-5 mb-4">Edit
+            Student</h1> 
+      
+          <form id="updateStudent" th:each="student:${stu}" th:action="'/student/'+${student.id}" method="post" onsubmit="return false"> 
+
+            <div class="mb-3">
+
+              <input style="text-align:center" type="text" id="newname" name="name" class="form-control form-control-lg"
+                placeholder="Name" th:value="${student.name}">
+            </div>
+             <div class="mb-3">
+      
+                <select  style="text-align:center; font-family: 'Courier New', Courier, monospace; color:#595C5E" name="hairColor" id="newhaircolor" class="form-control form-control-lg">
+                  <option selected th:value="${student.hairColor}" th:text="${student.hairColor}"></option>
+                  <option value="Black">Black</option>
+                  <option value="Brown">Brown</option>
+                  <option value="Gold">Blonde</option>
+                  <option value="Blue">Blue</option>
+                  <option value="Gray">Gray</option>
+                  <option value="Green">Green</option>
+                  <option value="Orange">Orange</option>
+                  <option value="Pink">Pink </option> 
+                  <option value="Red">Red</option>
+                  <option value="Violet">Violet</option>
+                </select>
+            </div>
+            <div class="mb-3">
+
+              <input style="text-align:center" type="number" id="newheight" name="height"
+                class="form-control form-control-lg" placeholder="Height(cm)" th:value="${student.height}">
+            </div>
+            <div class="mb-3">
+
+              <input style="text-align:center" type="number" id="newweight" name="weight"
+                class="form-control form-control-lg" placeholder="Weight(kg)" th:value="${student.weight}">
+            </div>
+            <div class="mb-3">
+
+              <input style="text-align:center" type="number" step="0.01" id="newgpa" name="gpa"
+                class="form-control form-control-lg" placeholder="GPA" th:value="${student.gpa}">
+            </div>
+
+            <div class="d-grid gap-2">
+              <form>
+                <input id="updateButton" class="btn btn-secondary" type="submit" value="UPDATE">
+              </form>
+              <form th:each="student:${stu}" th:action="'/student/delete/' + ${student.id}" method="post"> 
+                <input class="btn btn-secondary" style="color:red ;background-color:#6E757C; width:100%; margin-top:8px" type="submit" value="REMOVE" confirm="Are you sure?">
+              </form><br>
+            </div>
+
+            <script>
+
+              var updateBtn = document.getElementById("updateButton");
+              updateBtn.addEventListener("click",updateStudent);
+              
+              function updateStudent() {
+                  var newName = document.getElementById("newname").value;
+                  var newHairColor = document.getElementById("newhaircolor").value;
+                  var newHeight = document.getElementById("newheight").value;
+                  var newWeight = document.getElementById("newweight").value;
+                  var newGpa = document.getElementById("newgpa").value;
+              
+                  if (newName == "") {
+                      alert("NAME field cannot be EMPTY");
+                  }
+              
+                  else if (newHairColor == "") {
+                      alert("HAIR COLOR field cannot be EMPTY");
+                  }
+              
+                  else if (newHeight == "") {
+                      alert("HEIGHT field cannot be EMPTY");
+                  }
+                  else if(parseInt(newHeight) <= 0) {
+                      alert("HEIGHT cannot be ≤ 0");
+                  }
+              
+                  else if (newWeight == "") {
+                      alert("WEIGHT field cannot be EMPTY");
+                  }
+                  else if(parseInt(newWeight) <= 0) {
+                      alert("WEIGHT cannot be ≤ 0");
+                  }
+              
+                  else if (newGpa == "") {
+                      alert("GPA field cannot be EMPTY");
+                  }
+                  else if (parseFloat(newGpa) < 0 || parseFloat(newGpa) > 4.33) {
+                      alert("GPA field range: [0, 4.33]");
+                  }   
+                  else {
+                      document.getElementById("updateStudent").onsubmit = function (event) {
+                          return true;
+                      };
+                  }
+              }
+            </script>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
